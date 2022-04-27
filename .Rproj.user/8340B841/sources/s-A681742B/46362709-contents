@@ -1,0 +1,84 @@
+# load the codes
+library(biomaRt)
+# #library(oposSOM)
+# library(ape)
+# library(tsne)
+# library(pixmap)
+# library(fdrtool)
+# library(sva)
+
+load("G:/Other computers/Woring_main_laptop/Documents/SNPoSOM_files/HGDP_topSD_full_without_normalization.RData")
+env$indata <- env$indata[sample(1:nrow(env$indata), 500),]
+
+ind_som <- sample(1:ncol(env$indata), 30)
+ind_pred <- sample(1:ncol(env$indata), 20)
+
+indata_som <- env$indata[,ind_som]
+labels_som <- env$group.labels[ind_som]
+colors_som <- env$group.colors[ind_som]
+
+indata_pred <- env$indata[,ind_pred]
+labels_pred <- env$group.labels[ind_pred]
+colors_pred <- env$group.colors[ind_pred]
+
+rm(envir = env)
+
+
+env <- opossom.new(list(dataset.name = "G:/Other computers/Woring_main_laptop/Documents/SNPoSOM_files/test",
+                        dim.1stLvlSom = "auto",
+                        dim.2ndLvlSom = 10, #20
+                        training.extension = 1,
+                        rotate.SOM.portraits = 0,
+                        flip.SOM.portraits = F,
+                        feature.centralization = T,
+                        sample.quantile.normalization = F,
+                        snp.data.transformation = F,
+                        replace.missing.genotype = T,
+                        activated.modules = list("reporting" = T,
+                                                 "geneset.analysis" = T)))
+
+env$indata <- indata_som
+env$group.colors <- colors_som
+env$group.labels <- labels_som
+
+opossom.run(env)
+###################################################################
+## set data for svmr
+# load("G:/Other computers/Woring_main_laptop/Documents/SNPoSOM_files/HGDP_topSD_full_without_normalization.RData")
+# pred_som <- env
+# 
+# load("G:/Other computers/Woring_main_laptop/Documents/SNPoSOM_files/test.RData")
+# 
+# 
+# pred_som$indata <- pred_som$indata[rownames(env$indata), - which(colnames(env$indata) %in% colnames(env$indata))]
+# 
+# ind_pred <- sample(1:ncol(pred_som$indata), 20)
+# pred_som$indata <- pred_som$indata[,ind_pred]
+# pred_som$group.labels <- pred_som$group.labels[ind_pred]
+# pred_som$group.colors <- pred_som$group.colors[ind_pred]
+# 
+# opossom.prediction.new(env,
+#                        list(prediction.indata = pred_som$indata,
+#                             metagene.radius = 2,
+#                             prediction.group.labels = pred_som$group.labels,
+#                             prediction.group.colors = pred_som$group.colors),
+#                        list(reporting = TRUE,
+#                             feature.centralization = TRUE,
+#                             batch.effect.correction = T,
+#                             group.analysis = T,
+#                             annotation.analysis = T))
+
+opossom.prediction.new(env,
+                       list(prediction.indata = indata_pred,
+                            metagene.radius = 2,
+                            prediction.group.labels = labels_pred,
+                            prediction.group.colors = colors_pred),
+                       list(reporting = TRUE,
+                            feature.centralization = TRUE,
+                            batch.effect.correction = T,
+                            group.analysis = T,
+                            annotation.analysis = T))
+
+
+
+opossom.svmr.run(env)

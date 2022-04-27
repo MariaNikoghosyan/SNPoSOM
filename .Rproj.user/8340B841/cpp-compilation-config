@@ -1,0 +1,15 @@
+{
+    "args": [
+        "-IC:/Program Files/RStudio/resources/libclang/builtin-headers/5.0.2",
+        "-IC:/Program Files/RStudio/resources/libclang/builtin-headers/libc++/5.0.2",
+        "-IC:/Users/User/Documents/R/win-library/4.1/RcppParallel/include",
+        "-IC:/Users/User/Documents/R/win-library/4.1/Rcpp/include",
+        "-std=gnu++11",
+        "-IC:/PROGRA~1/R/R-41~1.2/include",
+        "-DNDEBUG",
+        "-DRCPP_PARALLEL_USE_TBB=1"
+    ],
+    "pch": "Rcpp",
+    "is_cpp": true,
+    "hash": "165105767616492835601649283560"
+}

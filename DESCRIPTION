@@ -6,6 +6,27 @@ Author: Who wrote it
 Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
+Depends: R (>= 4.0.0), igraph (>= 1.0.0)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    ape,
+    Biobase,
+    biomaRt,
+    fastICA,
+    fdrtool,
+    graph,
+    igraph,
+    methods,
+    pixmap,
+    png,
+    Rcpp,
+    RcppParallel,
+    RCurl,
+    scatterplot3d,
+    sva,
+    tsne,
+    XML
+LinkingTo: RcppParallel, Rcpp
+RoxygenNote: 7.1.2

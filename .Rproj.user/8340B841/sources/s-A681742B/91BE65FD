@@ -1,0 +1,24 @@
+{
+    "id": "91BE65FD",
+    "path": "C:/Users/User/OneDrive/Documents/SNPoSOM/R/prepare_annotation.r",
+    "project_path": "R/prepare_annotation.r",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1651058901590.0,
+    "source_on_save": false,
+    "relative_order": 5,
+    "properties": {
+        "cursorPosition": "76,2",
+        "scrollLine": "49"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1650889266,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1650889266,
+    "read_only": false,
+    "read_only_alternatives": []
+}

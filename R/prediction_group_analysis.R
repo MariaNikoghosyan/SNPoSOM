@@ -1,0 +1,107 @@
+pipeline.prediction.groupAnalysis <- function(env)
+{
+  dir.create(paste(env$files.name, "- Results/Prediction/Summary Sheets - Groups"), showWarnings=FALSE)
+  dir.create(paste(env$files.name, "- Results/Prediction/Summary Sheets - Groups/CSV Sheets"), showWarnings=FALSE)
+  
+  local.env <- new.env()
+  local.env$preferences <- env$prediction$preferences
+  local.env$preferences$activated.modules$geneset.analysis <- env$preferences$activated.modules$geneset.analysis
+  local.env$preferences$standard.spot.modules <- env$preferences$standard.spot.modules
+  local.env$preferences$dim.1stLvlSom <- env$preferences$dim.1stLvlSom
+  local.env$gene.info <- env$prediction$gene.info
+  local.env$gs.def.list <- env$prediction$gs.def.list
+  #local.env$som.result <- env$som.result
+  local.env$som.result$feature.BMU <- env$prediction$feature.BMU
+  local.env$files.name <- env$files.name
+  local.env$csv.function <- env$csv.function
+  local.env$color.palette.portraits <- env$color.palette.portraits
+  local.env$color.palette.heatmaps <- env$color.palette.heatmaps
+  local.env$indata.temp <- env$prediction$prediction.indata.temp
+  local.env$preferences$group.maf <- TRUE
+  local.env$group.labels.origin <- env$prediction$prediction.group.labels
+  # calculate differential expression statistics
+  
+  local.env$p.g.m <- matrix(NA, nrow(env$prediction$prediction.indata), length(unique(env$prediction$prediction.group.labels)),
+                            dimnames=list(rownames(env$prediction$prediction.indata), unique(env$prediction$prediction.group.labels)))
+  local.env$fdr.g.m <- matrix(NA, nrow(env$prediction$prediction.indata), length(unique(env$prediction$prediction.group.labels)),
+                              dimnames=list(rownames(env$prediction$prediction.indata), unique(env$prediction$prediction.group.labels)))
+  local.env$n.0.m <- rep(NA, length(unique(env$prediction$prediction.group.labels)))
+  names(env$n.0.m) <- unique(env$prediction$prediction.group.labels)
+  local.env$perc.DE.m <- rep(NA, length(unique(env$prediction$prediction.group.labels)))
+  names(env$perc.DE.m) <- unique(env$prediction$prediction.group.labels)
+  
+  
+  for (gr in seq_along(unique(env$prediction$prediction.group.labels)))
+  {
+    samples.indata <- which(env$prediction$prediction.group.labels==unique(env$prediction$prediction.group.labels)[gr])
+    
+    local.env$p.g.m[,gr] <- apply( env$prediction$prediction.indata, 1, function(x)
+    {
+      if( var(x[-samples.indata]) == 0 ) return(1) 
+      
+      return( t.test( x[samples.indata], x[-samples.indata], var.equal=length(samples.indata)==1 )$p.value )
+    } )
+    
+    suppressWarnings({
+      try.res <- try({
+        fdrtool.result <- fdrtool(local.env$p.g.m[,gr], statistic="pvalue", verbose=FALSE, plot=FALSE)
+      }, silent=TRUE)
+    })
+    
+    if (!is(try.res,"try-error"))
+    {
+      #      p.g.m[,gr] <- fdrtool.result$pval
+      local.env$fdr.g.m[,gr] <- fdrtool.result$lfdr
+      local.env$n.0.m[gr] <- fdrtool.result$param[1,"eta0"]
+      local.env$perc.DE.m[gr] <- 1 - local.env$n.0.m[gr]
+    } else
+    {
+      #      p.g.m[,gr] <- order(apply(indata[,samples.indata,drop=FALSE],1,mean)) / nrow(indata)
+      local.env$fdr.g.m[,gr] <- local.env$p.g.m[,gr]
+      local.env$n.0.m[gr] <- 0.5
+      local.env$perc.DE.m[gr] <- 0.5
+    }    
+  }
+  # average over group members
+  
+  local.env$metadata <- do.call(cbind, by(t(env$prediction$predicted.metadata), env$prediction$prediction.group.labels, colMeans)[unique(env$prediction$prediction.group.labels)])
+  
+  local.env$indata <- do.call(cbind, by(t(env$prediction$prediction.indata+env$prediction$prediction.indata.gene.mean),
+                                        env$prediction$prediction.group.labels,
+                                        colMeans)[unique(env$prediction$prediction.group.labels)])
+  local.env$indata.temp <- do.call(cbind, by(t(env$prediction$prediction.indata.temp ),
+                                             env$prediction$prediction.group.labels,
+                                             colSums)[unique(env$prediction$prediction.group.labels)])
+  
+  local.env$indata.gene.mean <- rowMeans(local.env$indata)
+  
+  if (local.env$preferences$feature.centralization)
+  {
+    local.env$indata <- local.env$indata - local.env$indata.gene.mean
+  }
+  
+  local.env$group.colors <- env$prediction$prediction.group.colors[match(colnames(local.env$indata), env$prediction$prediction.group.labels)]
+  local.env$group.labels <- env$prediction$prediction.group.labels[match(colnames(local.env$indata), env$prediction$prediction.group.labels)]
+  names(local.env$group.labels) <- local.env$group.labels
+  names(local.env$group.colors) <- local.env$group.labels
+  
+  
+  
+  local.env$output.paths <- c("CSV" = paste(env$files.name, "- Results/Prediction/Summary Sheets - Groups/CSV Sheets"),
+                              "Summary Sheets Samples"= paste(env$files.name, "- Results/Prediction/Summary Sheets - Groups/Reports"))
+  
+  local.env <- pipeline.detectSpotsSamples(local.env)
+  
+  if (local.env$preferences$annotation.analysis)
+  {
+    local.env <- pipeline.genesetStatisticSamples(local.env)
+    
+  }
+  pipeline.geneLists(local.env)
+  # pipeline.geneLists(local.env)
+  pipeline.summarySheetsSamples(local.env)
+  #pipeline.htmlGroupSummary(local.env)
+  
+  
+  
+}
