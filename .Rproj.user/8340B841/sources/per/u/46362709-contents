@@ -1,4 +1,5 @@
 # load the codes
+library(SNPoSOM)
 library(biomaRt)
 # #library(oposSOM)
 # library(ape)
