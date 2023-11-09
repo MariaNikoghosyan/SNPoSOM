@@ -1,0 +1,18 @@
+library(SNPoSOM)
+load("~/SNPoSOM/SNPoSOM_files/hgdp_full_training.prediction.RData")
+opossom.svmr.run(env_prediction)
+
+
+pipeline.prediction.Samples.Analysis(env)
+
+#adjust group labels/colors
+
+
+env_backup <- env
+
+env$prediction$preferences$group.analysis <- T
+
+pipeline.prediction.groupAnalysis(env)
+
+group_metadata <- do.call(cbind, by(t(env$prediction$predicted.metadata), env$prediction$prediction.group.labels, colMeans)[unique(env$prediction$prediction.group.labels)])
+

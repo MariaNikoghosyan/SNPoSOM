@@ -1,0 +1,183 @@
+[
+    {
+        "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+        "file_last_write": 1687869774.0,
+        "definitions": [
+            {
+                "usr": "c:@F@softMinus#&1d#S0_#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "softMinus(const double &, const double &)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 8,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@DeltaMatrixCalculator",
+                "kind": 3,
+                "parent_name": "",
+                "name": "DeltaMatrixCalculator",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 17,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@DeltaMatrixCalculator@F@operator()#k#k#",
+                "kind": 7,
+                "parent_name": "DeltaMatrixCalculator",
+                "name": "operator(std::size_t, std::size_t)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 29,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@DeltaMatrixCalculatorNoNA",
+                "kind": 3,
+                "parent_name": "",
+                "name": "DeltaMatrixCalculatorNoNA",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 43,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@DeltaMatrixCalculatorNoNA@F@operator()#k#k#",
+                "kind": 7,
+                "parent_name": "DeltaMatrixCalculatorNoNA",
+                "name": "operator(std::size_t, std::size_t)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 55,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@calculateDelta#&1I#S0_#1b#&I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calculateDelta(const Rcpp::NumericMatrix &, const Rcpp::NumericVector &, const bool, Rcpp::NumericMatrix &)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DeltaMatrix.cpp",
+                "line": 71,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DistanceCalculator.cpp",
+        "file_last_write": 1687869774.0,
+        "definitions": [
+            {
+                "usr": "c:@S@EuclideanDistanceCalculator",
+                "kind": 3,
+                "parent_name": "",
+                "name": "EuclideanDistanceCalculator",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DistanceCalculator.cpp",
+                "line": 6,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@EuclideanDistanceCalculator@F@operator()#k#k#",
+                "kind": 7,
+                "parent_name": "EuclideanDistanceCalculator",
+                "name": "operator(std::size_t, std::size_t)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DistanceCalculator.cpp",
+                "line": 15,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@calculateEuclideanDistances#&1I#&I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calculateEuclideanDistances(const Rcpp::NumericMatrix &, Rcpp::NumericVector &)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/DistanceCalculator.cpp",
+                "line": 29,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    },
+    {
+        "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+        "file_last_write": 1687869774.0,
+        "definitions": [
+            {
+                "usr": "c:@F@xyToRowNumber#I#I#I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "xyToRowNumber(int, int, int)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 9,
+                "column": 12,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@NeighborhoodMatrixCalculator",
+                "kind": 3,
+                "parent_name": "",
+                "name": "NeighborhoodMatrixCalculator",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 12,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@NeighborhoodMatrixCalculator@F@operator()#k#k#",
+                "kind": 7,
+                "parent_name": "NeighborhoodMatrixCalculator",
+                "name": "operator(std::size_t, std::size_t)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 30,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@calculateNeighborhoodMatrix#&1I#S0_#&1d#&I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "calculateNeighborhoodMatrix(const int &, const int &, const double &, Rcpp::NumericVector &)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 96,
+                "column": 6,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@MatrixToCodebookMatrixConverter",
+                "kind": 3,
+                "parent_name": "",
+                "name": "MatrixToCodebookMatrixConverter",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 147,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@S@MatrixToCodebookMatrixConverter@F@operator()#k#k#",
+                "kind": 7,
+                "parent_name": "MatrixToCodebookMatrixConverter",
+                "name": "operator(std::size_t, std::size_t)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 158,
+                "column": 8,
+                "hidden": false
+            },
+            {
+                "usr": "c:@F@matrixToCodebookMatrix#&1I#&I#",
+                "kind": 6,
+                "parent_name": "",
+                "name": "matrixToCodebookMatrix(const Rcpp::NumericVector &, Rcpp::NumericMatrix &)",
+                "file": "C:/Users/user/Documents/SNPoSOM/SNPoSOM/src/NeighborhoodMatrix.cpp",
+                "line": 173,
+                "column": 6,
+                "hidden": false
+            }
+        ],
+        "hidden": false
+    }
+]

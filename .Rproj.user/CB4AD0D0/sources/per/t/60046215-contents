@@ -1,0 +1,110 @@
+############################################
+########  Prepare the data  ###############
+############################################
+library(vcfR)
+#BiocManager::install("VariantAnnotation")
+#BiocManager::install("snpStats")
+# library("VariantAnnotation")
+vcf <- read.vcfR("C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/data/hgdp_wgs_subset_snposom.recode.vcf")
+geno <- as.matrix(vcf@gt[,-1])
+
+geno_modified <- t(apply(geno, 1, function(y)
+{
+  sapply(y, function(x)
+  {
+    return(strsplit(x, ":")[[1]][1])
+  })
+}))
+rownames(geno_modified) <- vcf@fix[, "ID"]
+
+geno_changes <- matrix(nrow = nrow(geno_modified), ncol = ncol(geno_modified), dimnames = dimnames(geno_modified))
+
+for (i in 1:nrow(geno_modified))
+  {
+  geno_changes[i,] <- sapply(geno_modified[i,], function(x)
+    {
+    if(x == "0/0"){x <- paste(vcf@fix[i, "REF"], vcf@fix[i, "REF"], sep="")}
+    if(x == "0/1" | x == "1/0"){x <- paste(vcf@fix[i, "REF"], vcf@fix[i, "ALT"], sep="")}
+    if(x == "1/1"){x <- paste(vcf@fix[i, "ALT"], vcf@fix[i, "ALT"], sep="")}
+    if(x == "./."){x <- NA}
+    return(x)
+
+  })
+}
+
+# write.table(geno_changes, "C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/data/hgdp_full_letter_genotype.txt", sep = "")
+metadata <- read.table("C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/data/hgdp_wgs.20190516.metadata.txt", header = T)
+pop_vector <- metadata$region
+names(pop_vector) <- metadata$sample
+pop_vector_1 <- metadata$population
+names(pop_vector_1) <- metadata$sample
+
+group_info <- data.frame(id = colnames(geno_changes),
+                         geno_region = pop_vector[colnames(geno_changes)],
+                         population = pop_vector_1[colnames(geno_changes)])
+
+
+###add color info
+
+library(RColorBrewer)
+n <- length(unique(group_info$geno_region))
+qual_col_pals = brewer.pal.info[brewer.pal.info$category == 'qual',]
+col_vector = unlist(mapply(brewer.pal, qual_col_pals$maxcolors, rownames(qual_col_pals)))
+pie(rep(1,n), col=sample(col_vector, n))
+
+col_vector_geno <- sample(col_vector, length(unique(group_info$geno_region)))
+names(col_vector_geno) <- unique(group_info$geno_region)
+col_vector_pop <- sample(col_vector, length(unique(group_info$population)))
+names(col_vector_pop) <- unique(group_info$population)
+
+group_info$geno_region_col <- col_vector_geno[group_info$geno_region]
+group_info$population_col <- col_vector_pop[group_info$population]
+
+save(geno_changes, group_info, file ="C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/data/hgdp_full_letter_genotype_group_info.RData")
+
+
+
+############################################
+########  Run som  ###############
+############################################
+
+load("C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/data/hgdp_full_letter_genotype_group_info.RData")
+
+indata <- geno_changes[,sample(colnames(geno_changes), 40)]
+group_labels <- group_info$geno_region[which(group_info$id %in% colnames(indata))]
+table(group_labels)
+group_color <- group_info$geno_region_col[which(group_info$id %in% colnames(indata))]
+
+
+
+library(SNPoSOM)
+
+
+
+env <- opossom.new( list(
+  dataset.name = "C:/Users/user/Documents/SNPoSOM/SNPoSOM_files/restuls/test_som",
+  dim.1stLvlSom = 20,
+  snp.analysis = TRUE,
+  snp.data.transformation = T,
+  genotype.transformation = "minor.major.alleles"))
+
+
+env$indata <- indata
+env$group.colors <- group_color
+env$group.labels <- group_labels
+
+opossom.run(env = env)
+
+#####  Prediction
+
+opossom.prediction.new(env,
+                       prediction = list(prediction.indata = prediction_indata,
+                                         prediction.group.labels = prediction_group_labels,
+                                         prediction.group.colors = prediction_group_color),
+                       preferences = list(group.analysis = T,
+                                          annotation.analysis = T))
+
+opossom.svmr.run(env)
+################################################################33
+
+

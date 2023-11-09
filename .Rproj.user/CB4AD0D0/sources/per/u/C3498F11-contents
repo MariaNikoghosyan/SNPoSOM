@@ -1,0 +1,4 @@
+setwd("C:/Users/user/Documents/SNPoSOM/SNPoSOM_files")
+# load file
+
+load("~/SNPoSOM/SNPoSOM_files/hgdp_full_training.prediction.RData")

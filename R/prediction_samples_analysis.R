@@ -8,7 +8,7 @@ pipeline.prediction.Samples.Analysis <- function(env)
                                                         x <- x[names(x) %in% rownames(env$prediction$prediction.indata)]
                                                         return(x)
                                                       })
-    
+
     env$prediction$gs.def.list <- lapply(env$gs.def.list, function(x)
     {
       x$Genes <- x$Genes[x$Genes %in% env$prediction$gene.info$ids]
@@ -16,8 +16,8 @@ pipeline.prediction.Samples.Analysis <- function(env)
       return(x)
     })
   }
-  
-  
+
+
   #define sample spot
   local.env <- new.env()
   local.env$indata <- env$prediction$prediction.indata
@@ -34,8 +34,8 @@ pipeline.prediction.Samples.Analysis <- function(env)
   local.env$preferences$activated.modules$geneset.analysis <- env$preferences$activated.modules$geneset.analysis
   local.env$output.paths <- paste(env$files.name, "- Results/Prediction/Summary Sheets - Samples")
   names(local.env$output.paths) <- "Summary Sheets Samples"
-  
-  
+
+
   local.env <- pipeline.detectSpotsSamples(local.env)
   local.env <- pipeline.diffExpressionStatistics(local.env)
   if(env$prediction$preferences$annotation.analysis & env$preferences$activated.modules$geneset.analysis)
@@ -43,9 +43,9 @@ pipeline.prediction.Samples.Analysis <- function(env)
     local.env <- pipeline.genesetStatisticSamples(local.env)
   }
 
-  
+
   pipeline.summarySheetsSamples(local.env)
-  
+
   #save the results
   env$prediction$fdr.g.m <- local.env$fdr.g.m
   env$prediction$n.0.m <- local.env$n.0.m
@@ -54,7 +54,7 @@ pipeline.prediction.Samples.Analysis <- function(env)
   env$prediction$perc.DE.m <- local.env$perc.DE.m
   env$prediction$samples.GSZ.scores <- local.env$samples.GSZ.scores
   env$prediction$spot.list.samples <- local.env$spot.list.samples
-  
+
   return(env)
 
 }
